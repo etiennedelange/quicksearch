@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "personal-context@personal-context": true
+  },
+  "extraKnownMarketplaces": {
+    "personal-context": {
+      "source": {
+        "source": "github",
+        "repo": "etiennedelange/personal-context"
+      }
+    }
+  }
+}

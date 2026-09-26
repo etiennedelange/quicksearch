@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickSearch</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="page">
+    <div class="running-head-row">
+      <span class="running-head">QUICKSEARCH</span>
+      <span id="modeIndicator" class="mode-indicator">Filenames</span>
+    </div>
+
+    <div class="headword-block">
+      <input id="queryInput" class="headword" type="text" placeholder="Type to search…" autocomplete="off" spellcheck="false">
+      <span id="headwordCaret" class="headword-caret"></span>
+      <div class="headword-rule"></div>
+    </div>
+
+    <div id="colophon" class="colophon"></div>
+
+    <div class="citation-column-wrap">
+      <div id="citationColumn" class="citation-column"></div>
+      <div id="dividerHandle" class="divider-handle" title="Drag to resize"></div>
+    </div>
+
+    <div id="notice" class="notice" hidden></div>
+
+    <div id="footer" class="footer"></div>
+
+    <div id="tooltip" class="tooltip" hidden></div>
+
+    <div id="contextMenu" class="context-menu" hidden></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

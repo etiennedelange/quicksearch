@@ -1,0 +1,9 @@
+# Rust / Tauri build output
+/src-tauri/target/
+/src-tauri/gen/schemas/
+
+# Local runtime files written beside a dev build
+config.json
+
+# Per-machine Claude Code settings
+.claude/settings.local.json
