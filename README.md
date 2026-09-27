@@ -1,5 +1,7 @@
 # QuickSearch
 
+> **Status: experimental.** A personal tool built for one user (the author). Expect bugs, breaking changes, and no compatibility guarantees between versions.
+
 A Windows hotkey window that finds files, and lines inside files, across whole drives.
 
 Press `Ctrl+Alt+Space` from any app, type part of a filename or some text you remember from the file, and press `Enter` to open the hit in your editor at the right line. It searches every configured root (`C:\` and `D:\` by default), not just the project that happens to be open. It is keyboard-first: the mouse works, but nothing needs it.
@@ -80,6 +82,8 @@ The screenshots come from `scripts/screenshots/`. The script runs `src/` as-is i
 **Filename and folder search** use an in-memory index of every path under the roots, built once with `rg --files` (about 287,000 paths and 80 MB on the author's two drives). The index is saved as a SQLite catalog in `%APPDATA%\io.github.etiennedelange.quicksearch\` so later launches don't rewalk the disks. A filesystem watcher (`notify`) keeps it current while the app runs, and a periodic rebuild catches anything the watcher missed. The status line under the query reports which of those states the index is in.
 
 The main files are `src-tauri/src/search.rs` (both search paths), `filecache.rs` (the index), `index_store.rs` (SQLite), `index_watcher.rs`, `config.rs`, and `platform/` (Windows plumbing: job objects, file clipboard, window toggle and geometry). [`docs/PRODUCT.md`](docs/PRODUCT.md) records who the app is for and the design principles behind it.
+
+The marketing site is a separate Astro project in [`site/`](site/README.md).
 
 ## License
 
