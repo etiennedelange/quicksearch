@@ -4,6 +4,10 @@ A Windows hotkey window that finds files, and lines inside files, across whole d
 
 Press `Ctrl+Alt+Space` from any app, type part of a filename or some text you remember from the file, and press `Enter` to open the hit in your editor at the right line. It searches every configured root (`C:\` and `D:\` by default), not just the project that happens to be open. It is keyboard-first: the mouse works, but nothing needs it.
 
+| Filenames | Contents |
+| --- | --- |
+| ![Filenames-mode results for the query "index", ten matching paths with the match highlighted in red](./docs/screenshots/filenames.png) | ![Contents-mode results for the query "index", four file:line matches with excerpts](./docs/screenshots/content.png) |
+
 ## Install
 
 QuickSearch runs on Windows 10 and 11 and needs two things on `PATH`:
@@ -63,8 +67,11 @@ The app is a [Tauri 2](https://tauri.app) project: Rust in `src-tauri/`, and a p
 | `node --test scripts/frontend-settings.test.cjs` | Frontend tests against mocked IPC |
 | `cargo tauri build` | NSIS installer (needs `cargo install tauri-cli --version "^2"`) |
 | `.\scripts\benchmark-quicksearch.ps1 -Executable <exe>` | Sample startup memory and I/O to CSV |
+| `pnpm screenshots` | Regenerate the screenshots in `docs/screenshots/` |
 
 CI runs formatting, clippy, and both test suites on Windows for every push and pull request.
+
+The screenshots come from `scripts/screenshots/`. The script runs `src/` as-is in headless Chromium and swaps the Tauri backend for a mock that returns a made-up two-drive result set, so it works anywhere, not just on Windows — run `pnpm install && pnpm exec playwright install chromium` once before the first run.
 
 ## How it works
 

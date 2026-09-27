@@ -1,0 +1,11 @@
+{
+  "name": "quicksearch",
+  "private": true,
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "screenshots": "node scripts/screenshots/capture.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
+  }
+}

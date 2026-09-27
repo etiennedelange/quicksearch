@@ -7,3 +7,6 @@ config.json
 
 # Per-machine Claude Code settings
 .claude/settings.local.json
+
+# Node deps for scripts/screenshots/
+node_modules/
