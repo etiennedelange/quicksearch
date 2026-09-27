@@ -1,0 +1,104 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const ogImage = new URL('/og.png', Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={Astro.url.href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {import.meta.env.PROD && (
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+      />
+    )}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --paper: #ede7da;
+    --paper-shade: #e1d8c4;
+    --rule: #8a8175;
+    --ink-fade: #4e463c;
+    --ink: #14120f;
+    --rubric: #9b2f24;
+    --max-width: 46rem;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  body {
+    font-family: ui-monospace, Consolas, 'Courier New', monospace;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: Georgia, 'Sitka Text', 'Times New Roman', serif;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .rubric {
+    color: var(--rubric);
+  }
+
+  kbd {
+    display: inline-block;
+    padding: 0.1em 0.5em;
+    border: 1px solid var(--ink);
+    font-family: inherit;
+    font-size: 0.85em;
+  }
+</style>

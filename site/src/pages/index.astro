@@ -1,0 +1,364 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import filenames from '../assets/screenshots/filenames.png';
+import content from '../assets/screenshots/content.png';
+
+const repo = 'https://github.com/etiennedelange/quicksearch';
+const latestRelease = `${repo}/releases/latest`;
+
+const shortcuts: [string, string][] = [
+  ['Ctrl+Alt+Space', 'Show or hide the window'],
+  ['Tab', 'Cycle mode: Filenames, Contents, Both, Folders'],
+  ['Up / Down', 'Move the selection'],
+  ['Enter', 'Open the selected result in the editor'],
+  ['Ctrl+Enter', 'Show the selected result in Explorer'],
+  ['Alt+R', 'Toggle regex (literal by default)'],
+  ['Alt+C', 'Cycle case: smart, sensitive, insensitive'],
+  ['Esc', 'Clear the query; press again to hide'],
+];
+---
+
+<Layout
+  title="QuickSearch — whole-drive search on a hotkey"
+  description="A Windows hotkey window that finds files, and lines inside files, across whole drives. Keyboard-first, opens hits straight in your editor."
+>
+  <header class="bar">
+    <div class="wrap bar-row">
+      <span class="running-head">QUICKSEARCH</span>
+      <nav class="bar-links">
+        <a href={repo}>Source</a>
+        <a href={latestRelease}>Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <p class="eyebrow rubric">WINDOWS · GLOBAL HOTKEY · WHOLE-DRIVE SEARCH</p>
+      <h1>QuickSearch</h1>
+      <p class="lead">
+        A hotkey window that finds files, and lines inside files, across whole
+        drives.
+      </p>
+      <p>
+        Press <kbd>Ctrl+Alt+Space</kbd> from any app, type part of a filename
+        or some text you remember from the file, and press <kbd>Enter</kbd> to
+        open the hit in your editor at the right line. It searches every
+        configured root — <code>C:\</code> and <code>D:\</code> by default —
+        not just the project that happens to be open.
+      </p>
+      <p class="status-note">
+        <span class="rubric">Experimental.</span> A personal tool that changes
+        often, with no compatibility guarantees between releases.
+      </p>
+      <div class="cta-row">
+        <a class="cta" href={latestRelease}>Download for Windows</a>
+        <a class="cta cta-quiet" href={repo}>View on GitHub</a>
+      </div>
+    </section>
+
+    <section class="wrap shots">
+      <figure>
+        <Image
+          src={filenames}
+          alt='Filenames-mode results for the query "index", ten matching paths with the match highlighted in red'
+          width={1400}
+          height={872}
+        />
+        <figcaption>Filenames</figcaption>
+      </figure>
+      <figure>
+        <Image
+          src={content}
+          alt='Contents-mode results for the query "index", four file:line matches with excerpts'
+          width={1400}
+          height={872}
+        />
+        <figcaption>Contents</figcaption>
+      </figure>
+    </section>
+
+    <section class="wrap">
+      <h2>How it searches</h2>
+      <ul class="citations">
+        <li class="citation">
+          <span class="locator">Every root you configure</span>
+          <span class="excerpt"
+            >Not just the project that happens to be open —
+            <span class="rubric">C:\</span> and
+            <span class="rubric">D:\</span> by default, every drive you tell it
+            about.</span
+          >
+        </li>
+        <li class="citation">
+          <span class="locator">Results stream in</span>
+          <span class="excerpt"
+            >The first hits land in well under a <span class="rubric"
+              >second</span
+            >; a rare whole-drive query can take a minute, and you watch it
+            arrive.</span
+          >
+        </li>
+        <li class="citation">
+          <span class="locator">Keyboard-first</span>
+          <span class="excerpt"
+            >Hotkey, type, <span class="rubric">Enter</span>. The mouse works,
+            but nothing needs it.</span
+          >
+        </li>
+        <li class="citation">
+          <span class="locator">Opens where you need it</span>
+          <span class="excerpt"
+            >Hands the hit straight to
+            <span class="rubric">code -g file:line</span>, or whatever editor
+            command you set.</span
+          >
+        </li>
+      </ul>
+    </section>
+
+    <section class="wrap">
+      <h2>Shortcuts</h2>
+      <table class="keys">
+        <tbody>
+          {
+            shortcuts.map(([key, action]) => (
+              <tr>
+                <td class="key">{key}</td>
+                <td class="action">{action}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <section class="wrap install">
+      <h2>Install</h2>
+      <p>
+        Needs Windows 10 or 11 and <a href="https://github.com/BurntSushi/ripgrep"
+          >ripgrep</a
+        > (<code>rg</code>) on <code>PATH</code>. Results open in VS Code by
+        default; any editor command works.
+      </p>
+      <div class="cta-row">
+        <a class="cta" href={latestRelease}>Download latest release</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <p>
+      <a href={repo}>etiennedelange/quicksearch</a> · MIT licensed · no
+      telemetry
+    </p>
+  </footer>
+</Layout>
+
+<style>
+  .wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .bar {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .running-head {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .bar-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .bar-links a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hero {
+    padding: 3.5rem 1.5rem 2.5rem;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .lead {
+    font-family: Georgia, 'Sitka Text', 'Times New Roman', serif;
+    font-size: 1.25rem;
+    color: var(--ink-fade);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero p:not(.lead) {
+    margin-bottom: 1.5rem;
+    max-width: 38rem;
+  }
+
+  .status-note {
+    border-left: 2px solid var(--rubric);
+    padding-left: 0.75rem;
+    color: var(--ink-fade);
+    font-size: 0.9rem;
+  }
+
+  code {
+    font-family: inherit;
+    background: var(--paper-shade);
+    padding: 0.05em 0.35em;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cta {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .cta-quiet {
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .shots {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem 3rem;
+  }
+
+  @media (min-width: 46rem) {
+    .shots {
+      grid-template-columns: 1fr 1fr;
+      max-width: 84rem;
+    }
+  }
+
+  .shots figure {
+    border: 1px solid var(--rule);
+  }
+
+  .shots figcaption {
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8rem;
+    color: var(--ink-fade);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .citations {
+    list-style: none;
+  }
+
+  .citation {
+    display: grid;
+    grid-template-columns: 12rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--rule) 45%, transparent);
+  }
+
+  @media (max-width: 32rem) {
+    .citation {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+
+  .locator {
+    font-weight: 700;
+  }
+
+  .excerpt {
+    color: var(--ink-fade);
+  }
+
+  .rubric {
+    color: var(--rubric);
+    font-weight: 700;
+  }
+
+  table.keys {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table.keys tr {
+    border-bottom: 1px solid color-mix(in srgb, var(--rule) 45%, transparent);
+  }
+
+  table.keys td {
+    padding: 0.5rem 0.75rem 0.5rem 0;
+  }
+
+  td.key {
+    font-weight: 700;
+    white-space: nowrap;
+    width: 9rem;
+  }
+
+  td.action {
+    color: var(--ink-fade);
+  }
+
+  .install p {
+    max-width: 38rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .install a {
+    text-decoration: underline;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding: 1.5rem 1.5rem 3rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8rem;
+    color: var(--ink-fade);
+  }
+
+  .footer a {
+    text-decoration: underline;
+  }
+</style>
