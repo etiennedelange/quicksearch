@@ -11,7 +11,7 @@ import { chromium } from 'playwright';
 import http from 'node:http';
 import { mkdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, extname, join } from 'node:path';
+import { dirname, extname, join, resolve, sep } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -26,9 +26,13 @@ const H = 560;
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
 const server = http.createServer(async (req, res) => {
-  const path = req.url === '/' ? '/index.html' : req.url;
+  const { pathname } = new URL(req.url, 'http://localhost');
+  const path = pathname === '/' ? '/index.html' : pathname;
   try {
-    const body = await readFile(join(SRC, path));
+    // Serve only files under src/; a request like /../package.json must 404.
+    const file = resolve(SRC, '.' + decodeURIComponent(path));
+    if (!file.startsWith(SRC + sep)) throw new Error('outside src/');
+    const body = await readFile(file);
     res.writeHead(200, { 'Content-Type': MIME[extname(path)] || 'application/octet-stream' });
     res.end(body);
   } catch {
@@ -36,8 +40,8 @@ const server = http.createServer(async (req, res) => {
     res.end();
   }
 });
-await new Promise((resolve) => server.listen(0, resolve));
-const url = `http://localhost:${server.address().port}/index.html`;
+await new Promise((done) => server.listen(0, '127.0.0.1', done));
+const url = `http://127.0.0.1:${server.address().port}/index.html`;
 
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
