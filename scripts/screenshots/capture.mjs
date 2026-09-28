@@ -11,7 +11,7 @@ import { chromium } from 'playwright';
 import http from 'node:http';
 import { mkdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, extname, join } from 'node:path';
+import { dirname, extname, join, resolve, sep } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..', '..');
@@ -26,10 +26,20 @@ const H = 560;
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
 const server = http.createServer(async (req, res) => {
-  const path = req.url === '/' ? '/index.html' : req.url;
+  const pathname = new URL(req.url || '/', 'http://localhost').pathname;
+  const requestPath = pathname === '/' ? '/index.html' : pathname;
+  const filePath = resolve(SRC, `.${requestPath}`);
+  const srcRoot = `${resolve(SRC)}${sep}`;
+
+  if (filePath !== resolve(SRC) && !filePath.startsWith(srcRoot)) {
+    res.writeHead(403);
+    res.end();
+    return;
+  }
+
   try {
-    const body = await readFile(join(SRC, path));
-    res.writeHead(200, { 'Content-Type': MIME[extname(path)] || 'application/octet-stream' });
+    const body = await readFile(filePath);
+    res.writeHead(200, { 'Content-Type': MIME[extname(requestPath)] || 'application/octet-stream' });
     res.end(body);
   } catch {
     res.writeHead(404);
