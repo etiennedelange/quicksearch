@@ -21,7 +21,7 @@ serde_json = { version = "1", features = ["preserve_order"] }
 regex = "1"
 base64 = "0.22"
 rusqlite = { version = "0.40", features = ["bundled"] }
-notify = "6"
+notify = "8"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.61", features = [
