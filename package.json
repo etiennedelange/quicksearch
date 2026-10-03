@@ -11,6 +11,6 @@
   "devDependencies": {
     "@tauri-apps/cli": "^2.11.5",
     "playwright": "^1.55.0",
-    "wrangler": "^4.141.0"
+    "wrangler": "^4.144.0"
   }
 }
