@@ -55,7 +55,7 @@ jobs:
         with:
           persist-credentials: false
       # Prebuilt binary; `cargo install cargo-audit` compiles for minutes.
-      - uses: taiki-e/install-action@4cef1412cce204788f482e778a0b9187f9626a29 # v2.87.21
+      - uses: taiki-e/install-action@8cca0918f8471c33515202b73f56ab27f2bed283 # v2.87.29
         with:
           tool: cargo-audit
       # Must run from src-tauri: cargo-audit reads .cargo/audit.toml relative to the working
