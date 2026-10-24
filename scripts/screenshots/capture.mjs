@@ -26,28 +26,22 @@ const H = 560;
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
 const server = http.createServer(async (req, res) => {
-  const pathname = new URL(req.url || '/', 'http://localhost').pathname;
-  const requestPath = pathname === '/' ? '/index.html' : pathname;
-  const filePath = resolve(SRC, `.${requestPath}`);
-  const srcRoot = `${resolve(SRC)}${sep}`;
-
-  if (filePath !== resolve(SRC) && !filePath.startsWith(srcRoot)) {
-    res.writeHead(403);
-    res.end();
-    return;
-  }
-
+  const { pathname } = new URL(req.url, 'http://localhost');
+  const path = pathname === '/' ? '/index.html' : pathname;
   try {
-    const body = await readFile(filePath);
-    res.writeHead(200, { 'Content-Type': MIME[extname(requestPath)] || 'application/octet-stream' });
+    // Serve only files under src/; a request like /../package.json must 404.
+    const file = resolve(SRC, '.' + decodeURIComponent(path));
+    if (!file.startsWith(SRC + sep)) throw new Error('outside src/');
+    const body = await readFile(file);
+    res.writeHead(200, { 'Content-Type': MIME[extname(path)] || 'application/octet-stream' });
     res.end(body);
   } catch {
     res.writeHead(404);
     res.end();
   }
 });
-await new Promise((resolve) => server.listen(0, resolve));
-const url = `http://localhost:${server.address().port}/index.html`;
+await new Promise((done) => server.listen(0, '127.0.0.1', done));
+const url = `http://127.0.0.1:${server.address().port}/index.html`;
 
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch();
