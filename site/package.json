@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "astro": "^7.3.5",
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.5"
   }
 }
