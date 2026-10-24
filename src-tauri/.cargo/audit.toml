@@ -1,0 +1,16 @@
+# cargo-audit configuration (audit.yml runs `cargo audit --deny warnings` from src-tauri).
+# Every entry is an *unmaintained* or *unsound* warning in a transitive dependency of Tauri that
+# only an upstream release can clear. None is a vulnerability. Re-check on each Tauri upgrade
+# and drop entries that no longer fire.
+
+[advisories]
+ignore = [
+    # zbus 5 helper crates: unmaintained, pulled in by Tauri's Linux D-Bus support.
+    "RUSTSEC-2026-0370", # zvariant
+    "RUSTSEC-2026-0371", # zbus_names
+    "RUSTSEC-2026-0372", # zvariant_derive
+
+    # Tauri's GTK 0.18 stack (Linux only; not in the Windows build).
+    "RUSTSEC-2024-0370", # proc-macro-error 1.0.4: unmaintained
+    "RUSTSEC-2024-0429", # glib 0.18.5: unsound VariantStrIter iterator impls
+]
